@@ -39,7 +39,11 @@ class AuditingServiceProvider extends ServiceProvider implements DeferrableProvi
             return new \OwenIt\Auditing\Auditor($app);
         });
 
-        $this->app->register(AuditingEventServiceProvider::class);
+        if ($this->app instanceof \Illuminate\Foundation\Application) {
+            $this->app->register(AuditingEventServiceProvider::class);
+        } else {
+            $this->app->register(AuditingLumenEventServiceProvider::class);
+        }
     }
 
     /**
