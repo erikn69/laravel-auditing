@@ -88,6 +88,7 @@ trait Audit
         }
         $this->data = array_merge($this->data, $resolverData);
 
+        $this->loadMissing('user');
         if ($this->user) {
             foreach ($this->user->getArrayableAttributes() as $attribute => $value) {
                 $this->data['user_' . $attribute] = $value;
@@ -159,11 +160,13 @@ trait Audit
         $value = $this->data[$key];
 
         // User value
+        $this->loadMissing('user');
         if ($this->user && Str::startsWith($key, 'user_')) {
             return $this->getFormattedValue($this->user, substr($key, 5), $value);
         }
 
         // Auditable value
+        $this->loadMissing('auditable');
         if ($this->auditable && Str::startsWith($key, ['new_', 'old_'])) {
             $attribute = substr($key, 4);
 

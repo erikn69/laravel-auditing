@@ -2,6 +2,7 @@
 
 namespace OwenIt\Auditing\Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Orchestra\Testbench\TestCase;
 use OwenIt\Auditing\AuditingServiceProvider;
 use OwenIt\Auditing\Resolvers\IpAddressResolver;
@@ -50,6 +51,10 @@ class AuditingTestCase extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        Model::preventAccessingMissingAttributes();
+        Model::shouldBeStrict(true);
+        Model::preventLazyLoading(true);
 
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->withFactories(__DIR__ . '/database/factories');
