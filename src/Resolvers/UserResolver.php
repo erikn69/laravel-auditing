@@ -4,7 +4,6 @@ namespace OwenIt\Auditing\Resolvers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use OwenIt\Auditing\Contracts\Auditable;
 
 class UserResolver implements \OwenIt\Auditing\Contracts\UserResolver
 {
@@ -14,7 +13,7 @@ class UserResolver implements \OwenIt\Auditing\Contracts\UserResolver
     public static function resolve()
     {
         $guards = Config::get('audit.user.guards', [
-            \config('auth.defaults.guard')
+            \config('auth.defaults.guard'),
         ]);
 
         foreach ($guards as $guard) {
@@ -24,7 +23,7 @@ class UserResolver implements \OwenIt\Auditing\Contracts\UserResolver
                 continue;
             }
 
-            if (true === $authenticated) {
+            if ($authenticated === true) {
                 return Auth::guard($guard)->user();
             }
         }

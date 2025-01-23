@@ -16,8 +16,6 @@ class DispatchAudit
 
     /**
      * Create a new DispatchAudit event instance.
-     *
-     * @param Auditable $model
      */
     public function __construct(Auditable $model)
     {
@@ -35,8 +33,8 @@ class DispatchAudit
             'class' => get_class($this->model),
             'model_data' => [
                 'exists' => true,
-                'connection' => $this->model->getQueueableConnection()
-            ]
+                'connection' => $this->model->getQueueableConnection(),
+            ],
         ];
 
         $customProperties = array_merge([
@@ -67,7 +65,7 @@ class DispatchAudit
     /**
      * Restore the model after serialization.
      *
-     * @param array<string,mixed> $values
+     * @param  array<string,mixed>  $values
      */
     public function __unserialize(array $values): void
     {
@@ -82,7 +80,7 @@ class DispatchAudit
     /**
      * Set the property value for the given property.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     protected function setModelPropertyValue(ReflectionClass $reflection, string $name, $value): void
     {

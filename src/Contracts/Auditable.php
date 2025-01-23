@@ -40,9 +40,9 @@ interface Auditable
     /**
      * Return data for an Audit.
      *
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     *
      * @return array<string,mixed>
+     *
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function toAudit(): array;
 
@@ -92,7 +92,7 @@ interface Auditable
     /**
      * Transform the data before performing an audit.
      *
-     * @param array<string,mixed> $data
+     * @param  array<string,mixed>  $data
      * @return array<string,mixed>
      */
     public function transformAudit(array $data): array;
