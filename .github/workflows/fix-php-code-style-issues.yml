@@ -17,6 +17,9 @@ jobs:
 
       - name: Fix PHP code style issues
         uses: aglipanci/laravel-pint-action@v2
+        with:
+          configPath: ".pint.json"
+          onlyDiff: "origin/master"
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
