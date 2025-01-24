@@ -52,7 +52,6 @@ trait Audit
         return $this->morphTo(__FUNCTION__, $morphPrefix.'_type', $morphPrefix.'_id');
     }
 
-
     /**
      * {@inheritdoc}
      */
