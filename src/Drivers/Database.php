@@ -23,23 +23,17 @@ class Database implements AuditDriver
     {
         if (($threshold = $model->getAuditThreshold()) > 0) {
             $auditClass = get_class($model->audits()->getModel());
-            $auditModel = new $auditClass;
+            $keyName = (new $auditClass)->getKeyName();
+            $forRemoval = array_slice(
+                $model->audits()->latest()->pluck($keyName)->all(),
+                $threshold
+            );
 
-            return $model->audits()
-                ->leftJoinSub(
-                    $model->audits()->getQuery()
-                        ->select($auditModel->getKeyName())->limit($threshold)->latest(),
-                    'audit_threshold',
-                    function ($join) use ($auditModel) {
-                        $join->on(
-                            $auditModel->gettable().'.'.$auditModel->getKeyName(),
-                            '=',
-                            'audit_threshold.'.$auditModel->getKeyName()
-                        );
-                    }
-                )
-                ->whereNull('audit_threshold.'.$auditModel->getKeyName())
-                ->delete() > 0;
+            if (count($forRemoval)) {
+                return $model->audits()
+                    ->whereIntegerInRaw($keyName, $forRemoval)
+                    ->delete() > 0;
+            }
         }
 
         return false;
